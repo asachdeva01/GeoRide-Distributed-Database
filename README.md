@@ -7,6 +7,7 @@ Ride-sharing platforms like Uber and Lyft require sophisticated distributed arch
 
 ## My Contributions
 **1. Geographic Partitioning Architecture:**
+
 I designed and implemented the geographic sharding strategy that partitions data by region to minimize cross-region latency.
 
 **Key Implementation Details:**
@@ -16,6 +17,7 @@ I designed and implemented the geographic sharding strategy that partitions data
 - Implemented API routing logic to direct queries to correct shards
 
 **2. Multi-Level Replication Strategy:**
+
 I implemented a hybrid replication approach that balances consistency and performance based on data criticality.
 
 **Synchronous Replication:**
@@ -29,6 +31,7 @@ I implemented a hybrid replication approach that balances consistency and perfor
 - Conflict resolution for eventual consistency
 
 **3. Transaction Management:**
+
 I designed the transaction flow for atomic ride bookings that span multiple tables and nodes.
 
 1. Start a distributed transaction
@@ -370,4 +373,5 @@ Verify the regions are assigned:
 ```sql
 SHOW REGIONS FROM DATABASE rideshare;
 ```
+
 
