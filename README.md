@@ -1,4 +1,48 @@
 # Geo-Distributed Ride-Sharing Database System
+## Project Overview
+GeoRide is a geo-distributed database system designed for ride-sharing applications. The system demonstrates core distributed database concepts, including geographic partitioning, multi-level replication, distributed transactions, and fault tolerance using CockroachDB across 4 simulated global regions.
+
+## Business Context
+Ride-sharing platforms like Uber and Lyft require sophisticated distributed architectures to ensure low latency, high availability, and data consistency across geographically dispersed regions. This project implements a functional prototype showcasing these industry-relevant concepts.
+
+## My Contributions
+**1. Geographic Partitioning Architecture:**
+I designed and implemented the geographic sharding strategy that partitions data by region to minimize cross-region latency.
+
+**Key Implementation Details:**
+- Developed a custom geohash-based partitioning algorithm using latitude/longitude coordinates
+- Designed composite shard keys: (region, entity_id) for data locality
+- Configured CockroachDB zone configs to pin data to specific regional nodes
+- Implemented API routing logic to direct queries to correct shards
+
+**2. Multi-Level Replication Strategy:**
+I implemented a hybrid replication approach that balances consistency and performance based on data criticality.
+
+**Synchronous Replication:**
+- Active rides, driver availability, payment transactions
+- Uses Raft consensus protocol for immediate consistency
+- 3 replicas per region with quorum writes
+
+**Asynchronous Replication:**
+- Completed rides, user profiles, ratings
+- Cross-region async replication to reduce latency
+- Conflict resolution for eventual consistency
+
+**3. Transaction Management:**
+I designed the transaction flow for atomic ride bookings that span multiple tables and nodes.
+
+1. Start a distributed transaction
+2. Check and lock driver availability
+3. Verify user account status
+4. Create a new ride record
+5. Update driver status to "busy"
+6. Commit or rollback atomically
+
+**4. Fault Tolerance:**
+- Heartbeat-based failure detection between nodes
+- Automatic failover to healthy replicas
+- RAFT-inspired leader election for partition tolerance
+- Split-brain prevention strategies
 
 ### You can either run locally or on cloud. This project is designed to be run on cloud.
 
@@ -326,3 +370,4 @@ Verify the regions are assigned:
 ```sql
 SHOW REGIONS FROM DATABASE rideshare;
 ```
+
